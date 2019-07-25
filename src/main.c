@@ -8,9 +8,9 @@
  ***************************************************************************/
 
 #undef _POSIX_C_SOURCE
-#define _POSIX_C_SOURCE 200809L
+#define _POSIX_C_SOURCE 200112L
 #undef _XOPEN_SOURCE
-#define _XOPEN_SOURCE 700
+#define _XOPEN_SOURCE 600
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -24,7 +24,7 @@
 static int usage(char **argv) {
 	printf("\nUsage:\t%s -q -f config_file program_name [arguments]\n"
 	       "\t-q makes proxychains quiet - this overrides the config setting\n"
-	       "\t-f allows to manually specify a configfile to use\n"
+	       "\t-f allows one to manually specify a configfile to use\n"
 	       "\tfor example : proxychains telnet somehost.com\n" "More help in README file\n\n", argv[0]);
 	return EXIT_FAILURE;
 }
@@ -71,6 +71,9 @@ int main(int argc, char *argv[]) {
 	int quiet = 0;
 	size_t i;
 	const char *prefix = NULL;
+
+	if(argc == 2 && !strcmp(argv[1], "--help"))
+		return usage(argv);
 
 	for(i = 0; i < MAX_COMMANDLINE_FLAGS; i++) {
 		if(start_argv < argc && argv[start_argv][0] == '-') {
